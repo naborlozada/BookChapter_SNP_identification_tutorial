@@ -54,7 +54,7 @@ wait;
 sleep 2;
 
 
-# First check: Verify errors after the indel realignment
+# Second check: Verify errors after the indel realignment
 # -----------------------------------------------------------------------------
 $java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 \
     -Xmx60G -jar $picard ValidateSamFile \
