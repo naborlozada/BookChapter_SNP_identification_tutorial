@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 
-# Single FASTQ pair files (mate 1 and mate 2).
+# Single FASTQ pair files (mate 1 and mate 2). Replace these names for your samples' names or defined in a variable, as described in the book chapter.
 #   sample1.R1.fastq.gz
 #   sample1.R2.fastq.gz
 
