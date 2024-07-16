@@ -1,9 +1,21 @@
 #!/usr/bin/bash
 
 
+# variables:
+# $tmpdir     : location of a directory where temporal files will be created. 
+# $trimmomatic : location of the binary program 'trimmomatic'.
+# $java22      : location of the binary java file (version 22).
+# $picard      : location of Picard program.  
+
+# $reference_DIR   : location of the reference genome (fasta) and associated index files.
+# $alignments_DIR  : location of BAM alignment files.
+# $reads_DIR       : location of the *.FASTQ.gz files (raw reads).
+# $paired_unpaired : location of the paired/unpaired reads files (mate1, R1; mate2, R2).
+
 # Single FASTQ pair files (mate 1 and mate 2). Replace these names for your samples' names or defined in a variable, as described in the book chapter.
 #   sample1.R1.fastq.gz
 #   sample1.R2.fastq.gz
+
 
 
 # trimming
