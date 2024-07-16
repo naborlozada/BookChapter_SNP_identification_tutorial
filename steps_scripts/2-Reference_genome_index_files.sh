@@ -3,6 +3,13 @@
 # Make index files for the reference genome:
 # ------------------------------------------------------------------------------------------
 
+# variable:
+# $reference     : full path location of the reference genome in fasta format. 
+# $reference_DIR : location of the reference genome (fasta) and associated index files.
+# $java22        : location of the binary java file (version 22).
+# $picard        : location of Picard program.  
+
+
 # Working directory:
 cd $HOME/snps_identification/reference_genome
 
