@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-ls $choe
+
 
 # call variants
 bcftools mpileup -f $reference_DIR/reference_parsed.fasta $alignments_DIR/sample1.aln.dedup.raln_indels.fm.bam | bcftools call -mv -Oz -o $variants_DIR/sample1.aln.dedup.raln_indels.fm.vcf.gz;
