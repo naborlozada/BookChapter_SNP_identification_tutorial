@@ -1,6 +1,15 @@
 #!/usr/bin/bash
 
 
+# variables:
+# $tmpdir     : location of a directory where temporal files will be created. 
+# $java8      : location of the binary java file (version 8)
+# $gatk381    : location of GATK (version 3.8.1)  
+
+# $reference_DIR  : location of the reference genome (fasta) and associated index files.
+# $alignments_DIR : location of BAM alignment files.
+
+
 
 # Recalibration of the alignment based on Indel realigments
 # -----------------------------------------------------------------------------
@@ -12,7 +21,7 @@ $java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 \
     -T RealignerTargetCreator \
     -R $reference_DIR/reference_parsed.fasta \
     -I $alignments_DIR/sample1.aln.dedup.bam \
-    -o $outDIR/sample1.aln.dedup.indels.intervals \
+    -o $alignments_DIR/sample1.aln.dedup.indels.intervals \
     --num_threads 15
 wait;
 sleep 2;
@@ -25,8 +34,8 @@ $ $java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 
     -R $reference_DIR/reference_parsed.fasta \
     -I $alignments_DIR/sample1.aln.dedup.bam \
     -known indels.db.vcf.gz \                   # this line is optional
-    -targetIntervals $outDIR/sample1.aln.dedup.indels.intervals \
-    -o $outDIR/sample1.aln.dedup.raln_indels.bam
+    -targetIntervals $alignments_DIR/sample1.aln.dedup.indels.intervals \
+    -o $alignments_DIR/sample1.aln.dedup.raln_indels.bam
 wait;
 sleep 2;
 
