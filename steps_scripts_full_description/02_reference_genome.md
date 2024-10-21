@@ -52,7 +52,7 @@ reference_genome=/home/username/book_variant_calling/steps/2_reference_genome/Ae
 
 # Proceed to make each index separately.
 # index bwa
-bwa index ${reference_genome.fasta;
+bwa index ${reference_genome}.fasta;
 # index samtools
 samtools faidx ${reference_genome}.fasta;
 # index picard
