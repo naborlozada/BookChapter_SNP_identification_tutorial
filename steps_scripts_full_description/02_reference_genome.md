@@ -7,7 +7,7 @@ They share following message:
 
 *VEuPathDB is evolving under a new organizational structure. In order to use VEuPathDB resources, you will now need to log into your free account. This helps us collect accurate user metrics to guide future development.*
 
-Also, thy clarify:
+Also, they clarify:
 
 *IMPORTANT: If you already registered in another site
 (AmoebaDB, CryptoDB, FungiDB, GiardiaDB, MicrosporidiaDB, PiroplasmaDB, PlasmoDB, SchistoDB, ToxoDB, TrichDB, TriTrypDB, VectorBase or VEuPathDB)
