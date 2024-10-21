@@ -20,7 +20,7 @@
 (sratools) [username@server current_directory]$ prefetch SRR11196649
 
 
-# It might be possible to get the reads in parallel using one fo the two following options: 1) GNU parallel function or 2) the PBS jobs system implemented throught the SLURM cluster's system.
+# It might be possible to get the reads in parallel using one fo the two following options: 1) GNU parallel function or 2) the SBATCH jobs system implemented throught the SLURM cluster's system.
 # I did not try these options for this particular task, but although it might be posssible (with any of these functions), I think it might be risky since the multiple calls network request from a single IP address point can be suspicious for the recipient SRA server. However, you are free to try it. 
 # We recommend to do it 1-by-1 using a loop, to do so just create a script to make the job: 
 
