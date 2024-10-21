@@ -48,7 +48,7 @@ echo `pwd`
 echo
 echo
 echo
-echo "// [MAIN] PRE-PROCESSING SAMPLES //"
+echo "// [MAIN] PROCESSING REALINGMENT CORRECTION PER SAMPLE //"
 echo "####################################################################################################################################################################################"
 
 for BAMFILE in $reads_dir
