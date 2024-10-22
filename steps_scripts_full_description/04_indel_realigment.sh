@@ -56,7 +56,7 @@ do
         echo
         echo "[1] // Recalibration of the alignment based on Indel realigments //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-       FILENAME=$(basename ${BAMFILE} paired.dedup_reads.bam);
+       FILENAME=$(basename ${BAMFILE} .bam);
         
         # identify conflictive signal regions (run it using several threads):
         echo "$java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 -T RealignerTargetCreator -R $reference_dir/$reference_genome -I $bams_path/$BAMFILE -o $bams_path/${FILENAME}.indels.intervals --num_threads 15";
