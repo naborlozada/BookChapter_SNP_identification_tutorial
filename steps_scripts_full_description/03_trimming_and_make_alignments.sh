@@ -90,14 +90,14 @@ do
         echo
         echo "[2] // Mapping_reads //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        NEWTAG=${R1##*/}
-        ID_TAG=${NEWTAG//_1.fastq.gz/}
-        BAM_R1R2_paired_outfile=`echo "$R1_paired" | sed "s/\_1_paired.trimclip.fastq/.paired.aligned_raw_reads.bam/"`
-        echo ">>>conmmand_line.BWA: $BWA mem -t 30  $reference_dir/$reference_genome  $paired_dir_path/$R1_paired  $paired_dir_path/$R2_paired  -R '@RG\tID:$ID_TAG\tSM:$ID_TAG\tPL:illumina' | $SAMTOOLS view -b -@ 30 - >  $outfiles/$BAM_R1R2_paired_outfile"
+        NEWTAG=${R1##*/};
+        ID_TAG=${NEWTAG//_1.fastq.gz/};
+        BAM_R1R2_paired_outfile=`echo "$R1_paired" | sed "s/\_1_paired.trimclip.fastq/.paired.aligned_raw_reads.bam/"`;
+        echo ">>>conmmand_line.BWA: $BWA mem -t 30  $reference_dir/$reference_genome  $paired_dir_path/$R1_paired  $paired_dir_path/$R2_paired  -R '@RG\tID:$ID_TAG\tSM:$ID_TAG\tPL:illumina' | $SAMTOOLS view -b -@ 30 - >  $outfiles/$BAM_R1R2_paired_outfile";
 
         # Paired-ended samples (trimmed quallity and clippled)
         time $BWA mem -t 30 \
-            $reference_dir$reference_genome \
+            $reference_dir/$reference_genome \
             $paired_dir_path/$R1_paired \
             $paired_dir_path/$R2_paired \
             -R '@RG\tID:'$ID_TAG'\tSM:'$ID_TAG'\tPL:illumina' | $SAMTOOLS view -b -@ 30 - > $outfiles/$BAM_R1R2_paired_outfile
@@ -107,10 +107,10 @@ do
 
         echo
         echo
-        echo "[3] // Sort bam reads file: SortSam //"
+        echo "[3] // Sort bam reads file: SortSam //";
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        BAM_SORTED_outfile=`echo "$BAM_R1R2_paired_outfile" | sed "s/\.paired.aligned_raw_reads.bam/.paired.aligned_reads_sorted.bam/"`
-        echo ">>>conmmand_line.SortSam: java -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 -Xmx60G -jar $PICARD SortSam  INPUT=$outfiles/$BAM_R1R2_paired_outfile  OUTPUT=$outfiles/$BAM_SORTED_outfile  SORT_ORDER=coordinate  TMP_DIR=$tmpdir"
+        BAM_SORTED_outfile=`echo "$BAM_R1R2_paired_outfile" | sed "s/\.paired.aligned_raw_reads.bam/.paired.aligned_reads_sorted.bam/"`;
+        echo ">>>conmmand_line.SortSam: java -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 -Xmx60G -jar $PICARD SortSam  INPUT=$outfiles/$BAM_R1R2_paired_outfile  OUTPUT=$outfiles/$BAM_SORTED_outfile  SORT_ORDER=coordinate  TMP_DIR=$tmpdir";
 
         # [SortSam] sort bam file reads (by coordinates, default & mandatory required from GATK)
         time java -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 -Xmx60G -jar $PICARD SortSam \
@@ -124,10 +124,10 @@ do
 
         echo
         echo        
-        echo "[4] // MarkDuplicates:_Mark_duplicates //"
+        echo "[4] // MarkDuplicates:_Mark_duplicates //";
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        DUPLICATES_outfile=`echo "$BAM_SORTED_outfile" | sed "s/\.paired.aligned_reads_sorted.bam/.paired.dedup_reads.bam/"`
-        DUPLICATES_metrics=`echo "$BAM_SORTED_outfile" | sed "s/\.paired.aligned_reads_sorted.bam/.paired.dedup_reads.metrics.txt/"`
+        DUPLICATES_outfile=`echo "$BAM_SORTED_outfile" | sed "s/\.paired.aligned_reads_sorted.bam/.paired.dedup_reads.bam/"`;
+        DUPLICATES_metrics=`echo "$BAM_SORTED_outfile" | sed "s/\.paired.aligned_reads_sorted.bam/.paired.dedup_reads.metrics.txt/"`;
         echo ">>>conmmand_line.MarkDuplicates: java -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=32 -Xmx60G -jar $PICARD MarkDuplicates  INPUT=$outfiles/$BAM_SORTED_outfile  OUTPUT=$outfiles/$DUPLICATES_outfile  METRICS_FILE=$outfiles/$DUPLICATES_metrics  TMP_DIR=$tmpdir";
 
         # MarkDuplicates
@@ -142,14 +142,14 @@ do
 
         echo
         echo
-        echo " [5] // Make an index files for the sorted bam files //"
+        echo " [5] // Make an index files for the sorted bam files //";
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        echo ">>>conmmand_line.BWA: $BWA index  $outfiles/$DUPLICATES_outfile"
-        $BWA index  $outfiles/$DUPLICATES_outfile
+        echo ">>>conmmand_line.BWA: $BWA index  $outfiles/$DUPLICATES_outfile";
+        $BWA index  $outfiles/$DUPLICATES_outfile;
         echo
         echo
-        echo ">>>conmmand_line.SAMTOOLS: $SAMTOOLS index  $outfiles/$DUPLICATES_outfile"
-        $SAMTOOLS index $outfiles/$DUPLICATES_outfile
+        echo ">>>conmmand_line.SAMTOOLS: $SAMTOOLS index  $outfiles/$DUPLICATES_outfile";
+        $SAMTOOLS index $outfiles/$DUPLICATES_outfile;
         wait;
         sleep 2;
 
