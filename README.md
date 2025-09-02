@@ -14,18 +14,17 @@ _Repository with scripts and steps_
 ### Description.
 
 The series of scripts and command lines presented in this repository are fully described in [our book chapter](https://doi.org/10.1007/978-1-0716-4583-3_2) in the book **"Insect Genomics: Methods and Protocols"**. The guideline of this tutorial is divided in three major steps based on the GATK protocol: 1) preprocessing data and alignments, 2) refinement of alignments, and 3) variant calling and hard-filtering of Single Nucleotide Polymorphisms (SNPs).
-
-I. Installation of tools: FASTQC, BWA, vcftools, bcftools, samtools, picard, GATK. 
-
-II. The main content of this tutorial describes the following topics:
+ 
+I. The main content of this tutorial describes the following topics:
+ * Installation of tools: FASTQC, BWA, Java, picard, GATK, vcftools, samtools and bcftools. 
  * Quality control of the raw reads
  * Mapping of short reads to a reference genome
  * Realignment of insertion and deletions (indels)
  * Variant calling and hard-filtering of SNPs candidates
 
-III. Extra content: recalibration of aligned reads and parallelization, in which the information of these topics are located in the directories "BQSR" and "Parallelization".
+II. Extra content: recalibration of aligned reads and parallelization, in which the information of these topics are located in the directories "BQSR" and "Parallelization", respectively.
 
-IV. Final comments.
+III. Final comments.
 
 ### Directories:
 
