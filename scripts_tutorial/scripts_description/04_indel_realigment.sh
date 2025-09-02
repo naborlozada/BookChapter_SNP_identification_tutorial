@@ -4,12 +4,14 @@
 
 # // Correction of aligments for each single sample in a single Directory //
 
-# Bash script to process several alignments in a LOOP. That is, a single run per sample. This is particularly useful when there is only 1 computer and/or 1 server several threads that can be used.
+# Bash script to process one or several alignments in a LOOP, that is, a single run per paired reads sample.
+# This is particularly useful when there is only 1 computer and/or 1 server several threads that can be used.
 # It is important to mention that the first two steps are the main processes that run in parallel, while the rest does run with one thread.
-# IMPORTANT: Do the proper changes in the directory full path names for programs/scripts ('programs' section) used to run this bash script, and also for the infiles, outfiles (if required), and output directory names. 
+# IMPORTANT: Do the proper changes in the directory full path names for programs/scripts ('programs' section) used to run this bash script,  
+#            and also for the infiles, outfiles (if required), and output directory names. 
 #
-# Run this script as follow:
-#       nohup bash process_all_samples.loop_job.sh 2>> process_all_samples.loop_job.stderr.log &> process_all_samples.loop_job.stderr.log &
+# Run this script as follow (better under a screen linux session):
+#       nohup bash 04_indel_realignment.sh 2>> 04_indel_realignment.loop_job.stderr.log &> 04_indel_realignment.loop_job.stderr.log &
 
 
 # variables:
@@ -24,16 +26,18 @@
 
 # // paths & programs //
 # --------------------------------------------------
+# working directory
+workdir=/home/username/book_snps_identification
+
 # programs
-java8=      # write full path directory location of java version 8 for GATK 3.8 
-java22=     # write full path directory location of java version 22 for Picard 
-gatk381=    # write full path directory location of GATK 3.8
+java8=/programs/java8/bin/java8.jar            # write full path directory location of java version 8 for GATK 3.8 
+java22=/programs/java22/bin/java22.jar         # write full path directory location of java version 22 for Picard 
+gatk381=/programs/gatk_v38/bin/gatk_v38.jar    # write full path directory location of GATK 3.8
 
 # infiles
-reference_genome=Aedes-aegypti-LVP_AGWG_CHROMOSOMES.AaegL5_2.fasta;
-reference_dir=/home/username/book_variant_calling/steps/2_reference_genome;
-bams_dir=/home/username/raw_sequencing_data/Aedes_aegypti/population_name/*.paired.dedup_reads.bam;
-bams_path=/home/username/raw_sequencing_data/Aedes_aegypti/population_name/;
+reference_genome=/home/username/book_snps_identification/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES.AaegL5_2.fasta;
+bams_dir=/home/username/alignments/*.paired.dedup_reads.bam;
+bams_path=/home/username/alignments/;
 tmpdir=/home/username/TMP_DIR/;
 
 
@@ -59,14 +63,14 @@ do
        FILENAME=$(basename ${BAMFILE} .bam);
         
         # identify conflictive signal regions (run it using several threads):
-        echo "$java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 -T RealignerTargetCreator -R $reference_dir/$reference_genome -I $bams_path/$BAMFILE -o $bams_path/${FILENAME}.indels.intervals --num_threads 15";
+        echo "$java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 -T RealignerTargetCreator -R $reference_genome -I $workdir/$bams_path/$BAMFILE -o $workdir/$bams_path/${FILENAME}.indels.intervals --num_threads 15";
         
         # main
         $java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 \
             -T RealignerTargetCreator \
-            -R $reference_dir/$reference_genome \
-            -I $bams_path/$BAMFILE \
-            -o $bams_path/${FILENAME}.indels.intervals \
+            -R $reference_genome \
+            -I $workdir/$bams_path/$BAMFILE \
+            -o $workdir/$bams_path/${FILENAME}.indels.intervals \
             --num_threads 15
         wait;
         sleep 2;
@@ -74,28 +78,28 @@ do
         
         echo "[2] // Make correction on those regions //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        echo "$java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 -T IndelRealigner -R $reference_dir/$reference_genome -I $bams_path/$BAMFILE -known indels.db.vcf.gz -targetIntervals $bams_path/${FILENAME}.indels.intervals -o $bams_path/${FILENAME}.raln_indels.bam";
+        echo "$java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 -T IndelRealigner -R $reference_genome -I $workdir/$bams_path/$BAMFILE -known indels.db.vcf.gz -targetIntervals $workdir/$bams_path/${FILENAME}.indels.intervals -o $workdir/$bams_path/${FILENAME}.raln_indels.bam";
         
         # main:        
         $ $java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 \
             -T IndelRealigner \
-            -R $reference_dir/$reference_genome \
-            -I $bams_path/$BAMFILE \
+            -R $reference_genome \
+            -I $workdir/$bams_path/$BAMFILE \
             -known indels.db.vcf.gz \                   # this line is optional
-            -targetIntervals $bams_path/${FILENAME}.indels.intervals \
-            -o $bams_path/${FILENAME}.raln_indels.bam
+            -targetIntervals $workdir/$bams_path/${FILENAME}.indels.intervals \
+            -o $workdir/$bams_path/${FILENAME}.raln_indels.bam
         wait;
         sleep 2;
         
         
         echo "[3] // First check: Verify errors after the indel realignment //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        echo "$java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20  -Xmx60G -jar $picard ValidateSamFile INPUT=$bams_path/${FILENAME}.raln_indels.bam OUTPUT=$bams_path/${FILENAME}.raln_indels.ValidateSam.txt MODE=SUMMARY TMP_DIR=$tmpdir";
+        echo "$java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20  -Xmx60G -jar $picard ValidateSamFile INPUT=$workdir/$bams_path/${FILENAME}.raln_indels.bam OUTPUT=$workdir/$bams_path/${FILENAME}.raln_indels.ValidateSam.txt MODE=SUMMARY TMP_DIR=$tmpdir";
         
         # main:
         $java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20  -Xmx60G -jar $picard ValidateSamFile \
-            INPUT=$bams_path/${FILENAME}.raln_indels.bam \
-            OUTPUT=$bams_path/${FILENAME}.raln_indels.ValidateSam.txt \
+            INPUT=$workdir/$bams_path/${FILENAME}.raln_indels.bam \
+            OUTPUT=$workdir/$bams_path/${FILENAME}.raln_indels.ValidateSam.txt \
             MODE=SUMMARY \
             TMP_DIR=$tmpdir
         wait;
@@ -104,13 +108,13 @@ do
         
         echo "[4] // Make correction if errors were found in the realignment //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        echo "$java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20  -Xmx60G -jar $picard FixMateInformation  INPUT=$bams_path/${FILENAME}.raln_indels.bam  OUTPUT=$bams_path/${FILENAME}.raln_indels.fm.bam  ADD_MATE_CIGAR=true";
+        echo "$java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20  -Xmx60G -jar $picard FixMateInformation  INPUT=$workdir/$bams_path/${FILENAME}.raln_indels.bam  OUTPUT=$workdir/$bams_path/${FILENAME}.raln_indels.fm.bam  ADD_MATE_CIGAR=true";
         
         # main
         $java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 \
             -Xmx60G -jar $picard FixMateInformation \
-            INPUT=$bams_path/${FILENAME}.raln_indels.bam \
-            OUTPUT=$bams_path/${FILENAME}.raln_indels.fm.bam \
+            INPUT=$workdir/$bams_path/${FILENAME}.raln_indels.bam \
+            OUTPUT=$workdir/$bams_path/${FILENAME}.raln_indels.fm.bam \
             ADD_MATE_CIGAR=true
         wait;
         sleep 2;
@@ -118,13 +122,13 @@ do
         
         echo "[5] // Second check: Verify errors after the indel realignment //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        echo "$java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 -Xmx60G -jar $picard ValidateSamFile INPUT=$bams_path/${FILENAME}.raln_indels.fm.bam OUTPUT=$bams_path/${FILENAME}.raln_indels.fm.ValidateSam.txt MODE=SUMMARY TMP_DIR=$tmpdir";        
+        echo "$java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 -Xmx60G -jar $picard ValidateSamFile INPUT=$workdir/$bams_path/${FILENAME}.raln_indels.fm.bam OUTPUT=$workdir/$bams_path/${FILENAME}.raln_indels.fm.ValidateSam.txt MODE=SUMMARY TMP_DIR=$tmpdir";        
         
         # main:
         $java22 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=20 \
             -Xmx60G -jar $picard ValidateSamFile \
-            INPUT=$bams_path/${FILENAME}.raln_indels.fm.bam \
-            OUTPUT=$bams_path/${FILENAME}.raln_indels.fm.ValidateSam.txt \
+            INPUT=$workdir/$bams_path/${FILENAME}.raln_indels.fm.bam \
+            OUTPUT=$workdir/$bams_path/${FILENAME}.raln_indels.fm.ValidateSam.txt \
             MODE=SUMMARY \
             TMP_DIR=$tmpdir
         wait;
