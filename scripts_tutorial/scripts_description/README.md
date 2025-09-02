@@ -1,6 +1,6 @@
 ### Scripts_tutorial
 
-Description of each step with command lines for a single sample (*.md) or ≥1 sample (*.sh): 
+Description of each step with command lines for a single sample (\*.md) or ≥1 sample (\*.sh): 
 * 01_get_sequences.md
 * 02_reference_genome.md
 * 03_trimming_and_make_alignments.sh
