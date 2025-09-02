@@ -13,9 +13,8 @@ vi senegal.thies.txt     # (SRR11006725, SRR11006726)
 # reference_DIR : location of the reference genome (fasta) and associated index files.
 # variants_DIR  : location where the file with the variants (variant calling file, VCF) will be saved.
 
-reference_genome=/home/username/book_variant_calling/steps/2_reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed;
-DIRFILES=/home/username/Aedes-aegypti/population_name/processing/outfiles/main;
-variants_DIR=/home/username/Aedes-aegypti/population_name/variant_calling;
+reference_genome=/home/username/book_snps_identification/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES.AaegL5_2.parsed;
+variants_DIR=/home/username/variant_calling;
 
 
 # ------------------------------------------------------------------------------------------------
@@ -23,7 +22,7 @@ variants_DIR=/home/username/Aedes-aegypti/population_name/variant_calling;
 # ------------------------------------------------------------------------------------------------
 
 # call variants
-bcftools mpileup -f ${reference_genome}.fasta  -b $DIRFILES/mexico.tapachula.txt | bcftools call -mv -Oz -o $variants_DIR/mexico.tapachula.aln.dedup.raln_indels.fm.vcf.gz;
+bcftools mpileup -f ${reference_genome}.fasta  -b $variants_DIR/mexico.tapachula.txt | bcftools call -mv -Oz -o $variants_DIR/mexico.tapachula.aln.dedup.raln_indels.fm.vcf.gz;
 wait;
 sleep 2;
 
