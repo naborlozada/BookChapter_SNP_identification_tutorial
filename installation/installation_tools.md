@@ -153,6 +153,7 @@ conda config --add channels conda-forge
 conda create -n sratools sra-tools
 conda deactivate
 conda activate sratools
+conda install bioconda::sra-tools
 ```
 
 Next, download infile datasets: References genome, reads from A. aegypti populations.
