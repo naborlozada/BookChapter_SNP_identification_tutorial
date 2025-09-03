@@ -1,7 +1,9 @@
 
-## UPDATE for VectorBase database
+## Step 2: Download & Parse Reference Genome Files
 
-This file has the same information that in the other short command lines instructions from our book [chapter](https://github.com/naborlozada/BookChapter_SNP_identification_tutorial/blob/main/steps_scripts/2-Reference_genome_index_files.sh), however, the only change is the updated information associated to the VectorBase (VB) database: to have access to any information/resource of this database you have to create a **free** account through a registration process. This is a major update that this database has been introduced in the past month after major changes.
+### UPDATE for VectorBase database
+
+This file has the same information that in the other short command lines instructions from our book [chapter](https://link.springer.com/protocol/10.1007/978-1-0716-4583-3_2), however, the only change is the updated information associated to the VectorBase (VB) database: to have access to any information/resource of this database you have to create a **free** account through a registration process. This is a major update that this database has been introduced in the past month after major changes.
 They share the following message:
 
 *VEuPathDB is evolving under a new organizational structure. In order to use VEuPathDB resources, you will now need to log into your free account. This helps us collect accurate user metrics to guide future development.*
@@ -27,37 +29,37 @@ After registration you will be able to see all resources and can decide what ver
 
 
 # Working directory:
-cd $HOME/snps_identification/reference_genome
+cd $wordir/snps_identification/reference_genome
 
-# get reference genome
+# download reference genome: FASTA
 wget https://vectorbase.org/common/downloads/Legacy%20VectorBase%20Files/Aedes-aegypti/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.fa.gz
 # Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.fa.gz      100%[=====================================================================================================================>] 389,25M  25,5MB/s    in 32s     
 
-
+# download reference genome: GFF
 wget https://vectorbase.org/common/downloads/Legacy%20VectorBase%20Files/Aedes-aegypti/Aedes-aegypti-LVP_AGWG_BASEFEATURES_AaegL5.2.gff3.gz
 # Aedes-aegypti-LVP_AGWG_BASEFEATURES_AaegL5.2.gff3.gz 100%[=====================================================================================================================>]   5,12M  2,98MB/s    in 1,7s    
 
-# parse fasta headers
+# Parse fasta headers
 zcat Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.fa.gz | awk '{print $1}' > Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed.fasta
 
-# // Verify CHRM IDS //
-# get list of chromosomes and contigs IDs from FASTA and GFF files. Next, compare both IDs lists, and find whether all IDs are present in both files ('matched_ID') or there are IDs that are uniquely present either in the fasta or gff files annotation ('single_ID').
+# // Verify chromosome/contigs IDS //
+# Get lists of chromosomes and contigs IDs from FASTA and GFF files. Next, compare both IDs lists, and find whether all IDs are present in both files ('matched_ID') or there are IDs that are uniquely present either in the fasta or gff files annotation ('single_ID').
 
-# get chromosome/contigs IDs from fasta file
+# Get chromosome/contigs IDs from fasta file
 grep '>' Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed.fasta | sed -E 's/^>//' > aaegL5.v5_2.chrms_contigs_ids.fasta_list.txt
-# get chromosome/contigs IDs from gff file
+# Get chromosome/contigs IDs from gff file
 zcat Aedes-aegypti-LVP_AGWG_BASEFEATURES_AaegL5.2.gff3.gz | grep -v '^\#' | awk '{print $1}' | sort -u > aaegL5.v5_2.chrms_contigs_ids.gff_list.txt
 
-# compare both lists
-cat aaegL5.v5_2.chrms_contigs_ids.fasta_list.txt  aaegL5.v5_2.chrms_contigs_ids.gff_list.txt | sort | uniq -c | sort -n | awk '{if($1==1){print "single_ID\t"$0} else {print "matched_ID\t"$0} }' | cut -f 1 | sort | uniq -c | sort -n
-# 2310 matched_ID, no single chrm ids.
+# Compare both lists
+cat aaegL5.v5_2.chrms_contigs_ids.fasta_list.txt  aaegL5.v5_2.chrms_contigs_ids.gff_list.txt | sort | uniq -c | sort -n |  awk '{if($1==1){print "NOT_ALL_IDs_matched\t"$0} else {print "ALL_IDs_matched\t"$0} }' | cut -f 1 | sort | uniq -c | sort -n
+# 2310 ALL_IDs_matched, no single chrm ids.
 
-
-# reference genome
+# Reference genome path
 # Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed.fasta
 reference_genome=/home/username/book_variant_calling/steps/2_reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed
 
-# Proceed to make each index separately.
+
+# ** Proceed to make each index separately **
 # index bwa
 bwa index ${reference_genome}.fasta;
 # index samtools
