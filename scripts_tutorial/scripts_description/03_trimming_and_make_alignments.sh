@@ -7,11 +7,20 @@
 # IMPORTANT: Do the proper changes in the directory full path names for programs/scripts ('programs' section) used to run this bash script, and also for the infiles, outfiles (if required), and output directory names. 
 #
 # Run this script as follow:
-#       nohup bash process_all_samples.loop_job.sh 2>> process_all_samples.loop_job.stderr.log &> process_all_samples.loop_job.stderr.log &
-
+#  (1)  load variant_calling environment,
+#  (2)  test functionality of all installed programs,
+#  (3)  Run script:
+#        a) option 1: nohup
+#                nohup time bash 03_trimming_and_make_alignments.sh 2>> process_all_samples.loop_job.stderr.log &> process_all_samples.loop_job.stderr.log
+#        b) option 2: screen as background process
+#                time bash 03_trimming_and_make_alignments.sh 2>> process_all_samples.loop_job.stderr.log &> process_all_samples.loop_job.stderr.log
+#
+# Info for nohup:  https://www.digitalocean.com/community/tutorials/nohup-command-in-linux
+# Info for screen: https://blog.ronin.cloud/gnuscreen/
 
 
 gatk_v381="$workdir/programs/gatk_v381/GenomeAnalysisTK.jar";
+
 
 # // paths & programs //
 # --------------------------------------------------
@@ -80,7 +89,7 @@ do
             $paired_unpaired_path/$R1_unpaired \
             $paired_unpaired_path/$R2_paired \
             $paired_unpaired_path/$R2_unpaired \
-            ILLUMINACLIP:/home/username/programs/bioinformatics/Trimmomatic-0.38/adapters/TruSeq3-PE.fa:2:30:10 \
+            ILLUMINACLIP:$workdir/programs/Trimmomatic-0.39/adapters/TruSeq3-PE.fa:2:30:10 \
             LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
         wait;
         sleep 2;
@@ -93,11 +102,11 @@ do
         NEWTAG=${R1##*/};
         ID_TAG=${NEWTAG//_1.fastq.gz/};
         BAM_R1R2_paired_outfile=`echo "$R1_paired" | sed "s/\_1_paired.trimclip.fastq/.paired.aligned_raw_reads.bam/"`;
-        echo ">>>conmmand_line.BWA: $BWA mem -t 30  $reference_dir/$reference_genome  $paired_dir_path/$R1_paired  $paired_dir_path/$R2_paired  -R '@RG\tID:$ID_TAG\tSM:$ID_TAG\tPL:illumina' | $SAMTOOLS view -b -@ 30 - >  $outfiles/$BAM_R1R2_paired_outfile";
+        echo ">>>conmmand_line.BWA: $BWA mem -t 30  $reference_genome  $paired_dir_path/$R1_paired  $paired_dir_path/$R2_paired  -R '@RG\tID:$ID_TAG\tSM:$ID_TAG\tPL:illumina' | $SAMTOOLS view -b -@ 30 - >  $outfiles/$BAM_R1R2_paired_outfile";
 
         # Paired-ended samples (trimmed quallity and clippled)
-        time $BWA mem -t 30 \
-            $reference_dir/$reference_genome \
+        time BWA mem -t 30 \
+            $reference_genome \
             $paired_dir_path/$R1_paired \
             $paired_dir_path/$R2_paired \
             -R '@RG\tID:'$ID_TAG'\tSM:'$ID_TAG'\tPL:illumina' | $SAMTOOLS view -b -@ 30 - > $outfiles/$BAM_R1R2_paired_outfile
