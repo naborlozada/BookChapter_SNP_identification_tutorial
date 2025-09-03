@@ -11,26 +11,26 @@
 
 
 
+gatk_v381="$workdir/programs/gatk_v381/GenomeAnalysisTK.jar";
 
 # // paths & programs //
 # --------------------------------------------------
 # programs
-trimmomatic=/home/username/programs/bioinformatics/Trimmomatic-0.38/trimmomatic-0.38.jar
-SAMTOOLS=/home/username/programs/bioinformatics/samtools/samtools
-PICARD=/home/username/programs/bioinformatics/picard.jar
-BWA=/home/username/programs/bioinformatics/bwa/bwa
+trimmomatic="$workdir/programs/Trimmomatic-0.39/trimmomatic-0.39.jar";
+PICARD="$workdir/programs/bioinformatics/picard.jar";
 
 # infiles
-reference_genome=Aedes-aegypti-LVP_AGWG_CHROMOSOMES.AaegL5_2.fasta;
-reference_dir=/home/username/book_variant_calling/steps/2_reference_genome;
-reads_dir=/home/username/raw_sequencing_data/Aedes_aegypti/population_name/*1.fastq.gz;
-reads_path=/home/username/raw_sequencing_data/Aedes_aegypti/population_name;
-tmpdir=/home/username/TMP_DIR/;
+reference_genome="$workdir/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed";
+raw_reads_R1="$workdir/raw_reads/*1.fastq.gz";
+raw_reads_dir="$workdir/raw_reads";
+tmpdir="$workdir/TMP_DIR/";
 
 # outfiles
-paired_dir_path=/home/username/Aedes-aegypti/population_name/processing/outfiles/paired;
-unpaired_dir_path=/home/username/Aedes-aegypti/population_name/processing/outfiles/unpaired;
-outfiles=/home/username/Aedes-aegypti/population_name/processing/outfiles/main;
+cd raw_reads/ && mkdir mapped_unmapped;
+alignments_path="$workdir/alignments/mapped_unmapped";
+paired_unpaired_path="$workdir/alignments/mapped_unmapped";
+
+##outfiles=/home/username/Aedes-aegypti/population_name/processing/outfiles/main;
 
 
 
@@ -47,7 +47,7 @@ echo
 echo "// [MAIN] PRE-PROCESSING SAMPLES //"
 echo "####################################################################################################################################################################################"
 
-for R1 in $reads_dir
+for R1 in $raw_reads_R1
 do
         echo
         echo
@@ -76,10 +76,10 @@ do
             -trimlog $outfiles/$trimclip_logfile \
             $R1 \
             $R2 \
-            $paired_dir_path/$R1_paired \
-            $unpaired_dir_path/$R1_unpaired \
-            $paired_dir_path/$R2_paired \
-            $unpaired_dir_path/$R2_unpaired \
+            $paired_unpaired_path/$R1_paired \
+            $paired_unpaired_path/$R1_unpaired \
+            $paired_unpaired_path/$R2_paired \
+            $paired_unpaired_path/$R2_unpaired \
             ILLUMINACLIP:/home/username/programs/bioinformatics/Trimmomatic-0.38/adapters/TruSeq3-PE.fa:2:30:10 \
             LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
         wait;
