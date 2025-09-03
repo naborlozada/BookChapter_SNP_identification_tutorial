@@ -27,7 +27,7 @@ workdir="$HOME/book_chapter_SNPs";
 ```
 
 
-2. INSTALLATION of PPROGRAMS with MINICONDA
+2. INSTALLATION of PROGRAMS with MINICONDA
 
 ```bash
 # move to programs dir:
@@ -143,5 +143,16 @@ cd Trimmomatic-0.39;
 $java22 -jar trimmomatic-0.39.jar
 ```
 
-Next, download infile datasets: References genome, reads from A. aegypti populations.
+6. INSTALLATION of SRA-TOOLS.
 
+```bash
+# create a separated conda environment from the named "variant_calling"
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda create -n sratools sra-tools
+conda deactivate
+conda activate sratools
+```
+
+Next, download infile datasets: References genome, reads from A. aegypti populations.
