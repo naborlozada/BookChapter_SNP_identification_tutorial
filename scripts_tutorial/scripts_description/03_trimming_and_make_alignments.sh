@@ -102,14 +102,14 @@ do
         NEWTAG=${R1##*/};
         ID_TAG=${NEWTAG//_1.fastq.gz/};
         BAM_R1R2_paired_outfile=`echo "$R1_paired" | sed "s/\_1_paired.trimclip.fastq/.paired.aligned_raw_reads.bam/"`;
-        echo ">>>conmmand_line.BWA: $BWA mem -t 30  $reference_genome  $paired_dir_path/$R1_paired  $paired_dir_path/$R2_paired  -R '@RG\tID:$ID_TAG\tSM:$ID_TAG\tPL:illumina' | $SAMTOOLS view -b -@ 30 - >  $outfiles/$BAM_R1R2_paired_outfile";
+        echo ">>>conmmand_line.BWA: $BWA mem -t 30  $reference_genome  $paired_dir_path/$R1_paired  $paired_dir_path/$R2_paired  -R '@RG\tID:$ID_TAG\tSM:$ID_TAG\tPL:illumina' | samtools view -b -@ 30 - >  $outfiles/$BAM_R1R2_paired_outfile";
 
         # Paired-ended samples (trimmed quallity and clippled)
         time BWA mem -t 30 \
             $reference_genome \
             $paired_dir_path/$R1_paired \
             $paired_dir_path/$R2_paired \
-            -R '@RG\tID:'$ID_TAG'\tSM:'$ID_TAG'\tPL:illumina' | $SAMTOOLS view -b -@ 30 - > $outfiles/$BAM_R1R2_paired_outfile
+            -R '@RG\tID:'$ID_TAG'\tSM:'$ID_TAG'\tPL:illumina' | samtools view -b -@ 30 - > $outfiles/$BAM_R1R2_paired_outfile
         wait;
         sleep 2;
 
@@ -157,8 +157,8 @@ do
         $BWA index  $outfiles/$DUPLICATES_outfile;
         echo
         echo
-        echo ">>>conmmand_line.SAMTOOLS: $SAMTOOLS index  $outfiles/$DUPLICATES_outfile";
-        $SAMTOOLS index $outfiles/$DUPLICATES_outfile;
+        echo ">>>conmmand_line.SAMTOOLS: samtools index  $outfiles/$DUPLICATES_outfile";
+        samtools index $outfiles/$DUPLICATES_outfile;
         wait;
         sleep 2;
 
