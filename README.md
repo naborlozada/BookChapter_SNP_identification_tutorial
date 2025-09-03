@@ -39,14 +39,17 @@ III. Final comments.
 Working directory structure:
 
 ```text
-/home/
-  └── username/ 
-    └── snps_identification/ 
-      ├── alignments/ 
-      ├── mapped_n_unmapped/ 
-      ├── raw_reads/ 
-      ├── reference_genome/
-      └── variant_calling/
+# * WORKDIR STRUCTURE * 
+tree book_chapter_SNPs/
+
+book_chapter_SNPs/
+ ├── programs
+ └── snps_identification
+     ├── alignments
+     ├── mapped_unmapped
+     ├── raw_reads
+     ├── reference_genome
+     └── variant_calling
 ```
 
 
