@@ -54,6 +54,7 @@ conda install -c bioconda fastqc;
 conda install -c bioconda samtools;
 conda install -c bioconda bcftools;
 conda install -c bioconda vcftools;
+conda install -c bioconda bbmap;
 ```
 
 2. INSTALLATION of PROGRAMS via WGET from SOURCE WEBSITE DEVELOPERS.
