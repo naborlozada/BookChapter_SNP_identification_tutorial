@@ -46,6 +46,7 @@ conda activate variant_calling;
 conda config --add channels defaults;
 conda config --add channels bioconda;
 conda config --add channels conda-forge;
+conda config --set channel_priority strict;
 
 # Next, Install main programs via conda:
 conda install -c bioconda gzip;
@@ -54,8 +55,11 @@ conda install -c bioconda fastqc;
 conda install -c bioconda samtools;
 conda install -c bioconda bcftools;
 conda install -c bioconda vcftools;
-conda install -c bioconda bbmap;
+conda install bioconda::bbmap;
 conda install bioconda::parallel;
+conda install bioconda::fastqc;
+conda install bioconda::multiqc;
+
 ```
 
 3. INSTALLATION of PROGRAMS via `wget` from SOURCE WEBSITE DEVELOPERS.
