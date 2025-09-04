@@ -236,3 +236,29 @@ sleep 2;
 bcftools index -n $variants_DIR/SRR11006725.aln.dedup.raln_indels.fm.snps.fltrd.biallelic.vcf.gz
 ```
 
+### Quality samples: fastq and bam files
+
+Here, this step can be done in parallel after the step 2 (compressed fastq.gz files) and 10 (dedupped alignment). 
+
+A) Quality of the reads using `FASTQC`.
+
+```bash
+cd $workdir;
+mkdir quality_control && cd quality_control;
+
+fastqc $mapped_unmapped/SRR11006725.R1.paired.trimclip.fastq.gz  $mapped_unmapped/SRR11006725.R2.paired.trimclip.fastq.gz  -o  $workdir/quality_control;
+```
+ and involve two anlaysis
+
+B) Statistics for aligned reads `samtools`.
+
+```bash
+samtools flagstats $BAM_alignments/SRR11006725.paired.dedup.bam > $BAM_alignments/SRR11006725.paired.dedup.samtools_stats.txt;
+```
+
+c) Merge all quality data and statistics into one single graphical report using `MULTIQC`. After running this command, you will open the HTML report.
+
+```bash
+# assuming your current workdir is $workdir/quality_control
+multiqc .
+```
