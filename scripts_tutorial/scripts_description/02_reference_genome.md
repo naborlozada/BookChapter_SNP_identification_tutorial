@@ -56,7 +56,7 @@ cat aaegL5.v5_2.chrms_contigs_ids.fasta_list.txt  aaegL5.v5_2.chrms_contigs_ids.
 
 # Reference genome path
 # Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed.fasta
-reference_genome=/home/username/book_variant_calling/steps/2_reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed
+reference_genome="$wordir/book_variant_calling/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed";
 
 
 # ** Proceed to make each index separately **
