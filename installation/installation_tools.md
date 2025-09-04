@@ -55,6 +55,7 @@ conda install -c bioconda samtools;
 conda install -c bioconda bcftools;
 conda install -c bioconda vcftools;
 conda install -c bioconda bbmap;
+conda install bioconda::parallel;
 ```
 
 3. INSTALLATION of PROGRAMS via `wget` from SOURCE WEBSITE DEVELOPERS.
@@ -99,7 +100,7 @@ java8="$workdir/book_chapter_SNPs/programs/java8/bin/java";
 
 ```
 
-   3.2. Installation of **PICARD**.
+&emsp; &nbsp; 3.2. Installation of **PICARD**.
 
 ```bash
 cd $workdir/programs/;
@@ -113,7 +114,7 @@ $java22 -jar picard.jar
 picard="$workdir/programs/picard.jar";
 ```
 
-   3.3. Installation of **GATK**.
+&emsp; &nbsp; 3.3. Installation of **GATK**.
 
 ```bash
 cd $workdir/programs/;
@@ -133,7 +134,7 @@ cd gatk_v381/;
 gatk_v381="$workdir/programs/gatk_v381/GenomeAnalysisTK.jar";
 ```
 
-   3.4. Installation of **TRIMMOMATIC**.
+&emsp; &nbsp; 3.4. Installation of **TRIMMOMATIC**.
 
 ```bash
 cd $workdir/programs
@@ -146,7 +147,7 @@ cd Trimmomatic-0.39;
 $java22 -jar trimmomatic-0.39.jar
 ```
 
-   3.5. Installation of **SRA-TOOLS**.
+&emsp; &nbsp; 3.5. Installation of **SRA-TOOLS**.
 
 ```bash
 # create a separated conda environment from the named "variant_calling"
