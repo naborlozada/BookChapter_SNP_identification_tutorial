@@ -19,7 +19,7 @@
 # Info for screen: https://blog.ronin.cloud/gnuscreen/
 
 
-gatk_v381="$workdir/programs/gatk_v381/GenomeAnalysisTK.jar";
+
 
 
 # // paths & programs //
@@ -27,6 +27,7 @@ gatk_v381="$workdir/programs/gatk_v381/GenomeAnalysisTK.jar";
 # programs
 trimmomatic="$workdir/programs/Trimmomatic-0.39/trimmomatic-0.39.jar";
 PICARD="$workdir/programs/bioinformatics/picard.jar";
+
 
 # infiles
 reference_genome="$workdir/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.parsed";
