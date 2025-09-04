@@ -5,4 +5,4 @@ Description of each step with command lines for a single sample (\*.md) or ≥1 
 * 02_reference_genome.md
 * 03_trimming_and_make_alignments.sh
 * 04_indel_realigment.sh
-* 05_variant_calling.sh
+* 05_variant_calling.md
