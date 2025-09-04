@@ -3,16 +3,23 @@
 
 
 # // Correction of aligments for each single sample in a single Directory //
-
-# Bash script to process one or several alignments in a LOOP, that is, a single run per paired reads sample.
-# This is particularly useful when there is only 1 computer and/or 1 server several threads that can be used.
-# It is important to mention that the first two steps are the main processes that run in parallel, while the rest does run with one thread.
-# IMPORTANT: Do the proper changes in the directory full path names for programs/scripts ('programs' section) used to run this bash script,  
-#            and also for the infiles, outfiles (if required), and output directory names. 
+# ------------------------------------------------------------------------------------------------------------------------------------------------------- #
+# Bash script to process ONE or MORE alignments in a LOOP, that is, a single run per paired reads sample.
+# This script is particularly useful when there is only 1 computer with not much computational power or Server with low numer of threads accesible.
 #
-# Run this script as follow (better under a screen linux session):
+# NOTE 1: MULTI-THREADS (or multithreading): 
+# Overall, this script operate with 1 thread/core use. However, the first step uses multi-threads: "RealignerTargetCreator" (--num_threads NUMBER)
+# Where NUMBER is the number of threads. To control this just add desire number of threads to be used. Before running this script, please, check the number 
+# of threads available.
+# Additionally, all java process here use a multi-threads option named "Garbage Collector (GC)" (-XX:-UseParallelGC), and basically it handles the startup memory
+# of each process. To control the number of threads of this process change the number in the option: -XX:ParallelGCThreads=31
+# More information: https://sematext.com/java-garbage-collection-tuning/ 
+# 
+# NOTE 2: Set properly all directory full path names for programs, scripts, and files used to run this bash script.
+#
+# Run this script as follows (better under a screen linux session):
 #       nohup bash 04_indel_realignment.sh 2>> 04_indel_realignment.loop_job.stderr.log &> 04_indel_realignment.loop_job.stderr.log &
-
+# ------------------------------------------------------------------------------------------------------------------------------------------------------- #
 
 # variables:
 # $tmpdir     : location of a directory where temporal files will be created. 
@@ -27,18 +34,18 @@
 # // paths & programs //
 # --------------------------------------------------
 # working directory
-workdir=/home/username/book_snps_identification
+workdir="$HOME/book_chapter_SNPs";
 
 # programs
-java8=/programs/java8/bin/java8.jar            # write full path directory location of java version 8 for GATK 3.8 
-java22=/programs/java22/bin/java22.jar         # write full path directory location of java version 22 for Picard 
-gatk381=/programs/gatk_v38/bin/gatk_v38.jar    # write full path directory location of GATK 3.8
+java8="$workdir/programs/java8/bin/java8.jar";            # write full path directory location of java version 8 for GATK 3.8 
+java22="$workdir/programs/java22/bin/java22.jar";         # write full path directory location of java version 22 for Picard 
+gatk381="$workdir/programs/gatk_v38/bin/gatk_v38.jar";    # write full path directory location of GATK 3.8
 
 # infiles
-reference_genome=/home/username/book_snps_identification/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES.AaegL5_2.fasta;
-bams_dir=/home/username/alignments/*.paired.dedup_reads.bam;
-bams_path=/home/username/alignments/;
-tmpdir=/home/username/TMP_DIR/;
+reference_genome=$workdir/reference_genome/Aedes-aegypti-LVP_AGWG_CHROMOSOMES.AaegL5_2.fasta;
+bams_dir=$workdir/alignments/*.paired.dedup_reads.bam;
+bams_path=$workdir/alignments/;
+tmpdir=$workdir/TMP_DIR/;
 
 
 
@@ -55,21 +62,21 @@ echo
 echo "// [MAIN] PROCESSING REALINGMENT CORRECTION PER SAMPLE //"
 echo "####################################################################################################################################################################################"
 
-for BAMFILE in $reads_dir
+for BAMFILE in $bams_dir
 do
         echo
         echo "[1] // Recalibration of the alignment based on Indel realigments //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-       FILENAME=$(basename ${BAMFILE} .bam);
+        FILENAME=$(basename ${BAMFILE} .bam);
         
         # identify conflictive signal regions (run it using several threads):
-        echo "$java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 -T RealignerTargetCreator -R $reference_genome -I $workdir/$bams_path/$BAMFILE -o $workdir/$bams_path/${FILENAME}.indels.intervals --num_threads 15";
+        echo "$java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 -T RealignerTargetCreator -R $reference_genome -I $BAMFILE -o $workdir/$bams_path/${FILENAME}.indels.intervals --num_threads 15";
         
         # main
         $java8 -XX:ParallelGCThreads=31 -Xmx40G -jar $gatk381 \
             -T RealignerTargetCreator \
             -R $reference_genome \
-            -I $workdir/$bams_path/$BAMFILE \
+            -I $BAMFILE \
             -o $workdir/$bams_path/${FILENAME}.indels.intervals \
             --num_threads 15
         wait;
@@ -78,13 +85,13 @@ do
         
         echo "[2] // Make correction on those regions //"
         echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-        echo "$java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 -T IndelRealigner -R $reference_genome -I $workdir/$bams_path/$BAMFILE -known indels.db.vcf.gz -targetIntervals $workdir/$bams_path/${FILENAME}.indels.intervals -o $workdir/$bams_path/${FILENAME}.raln_indels.bam";
+        echo "$java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 -T IndelRealigner -R $reference_genome -I $BAMFILE -known indels.db.vcf.gz -targetIntervals $workdir/$bams_path/${FILENAME}.indels.intervals -o $workdir/$bams_path/${FILENAME}.raln_indels.bam";
         
         # main:        
         $ $java8 -Djava.io.tmpdir=$tmpdir -XX:ParallelGCThreads=1 -Xmx40G -jar $gatk381 \
             -T IndelRealigner \
             -R $reference_genome \
-            -I $workdir/$bams_path/$BAMFILE \
+            -I $BAMFILE \
             -known indels.db.vcf.gz \                   # this line is optional
             -targetIntervals $workdir/$bams_path/${FILENAME}.indels.intervals \
             -o $workdir/$bams_path/${FILENAME}.raln_indels.bam
@@ -134,7 +141,7 @@ do
         wait;
         sleep 2;
         
-        # The content of the second check file should be "No errors found.". 
+        # NOTE: The content of the 'second check' file should be "No errors found.". 
 
 
         echo
