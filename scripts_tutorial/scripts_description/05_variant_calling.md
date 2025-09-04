@@ -97,7 +97,7 @@ bcftools index -n $variants_DIR/mexico.tapachula.aln.dedup.raln_indels.fm.snps.f
 
 ### MORE OPTIONS FOR HARD-FILTERING SNPS in VCF FORMAT
 
-Filtering SNPs is not easy step and it depends on the platform/program used to for variant calling. Also, what set of criteria will be used or is more reliable. A highly recomended discussion with worked filtering examples is provided by [Jon Puritz in the DDOCENT website](https://ddocent.com//filtering/), in which such protocols are applied specifically for uses RAD (Restriction-site Associated DNA), ddRAD, ezRAD, SE-RAD, and PE-RAD sequencing data. Also, more diversity of options to filter SNPs with BCFTOOLS is posted below:
+Filtering SNPs is not easy step due the diverse set of technical and data source instances, such as the variant caller program used that will defined the name of the options used for filtering (e.g. GATK, Freebayes, Platypus) or whether the *Reads data* to be analyzed comes from *low*, *medium* or *high* coverage data, respectively. Thus, define what set of criteria will be used for this procedure is key to further analyses and should be deeply discussed; sometimes maybe perform different cutoffs on the same VCF file can also performed, them compare them to identify the differences. A highly recomended discussion with worked filtering examples is provided by [Jon Puritz in the DDOCENT website](https://ddocent.com//filtering/), in which such protocols are applied specifically for uses RAD (Restriction-site Associated DNA), ddRAD, ezRAD, SE-RAD, and PE-RAD sequencing data. Also, a diverse set of useful options to filter SNPs with BCFTOOLS is posted below:
 
 
 ```text
@@ -116,4 +116,5 @@ d)  BCFTOOLS official website with some additional instructions to plot filtered
 
 
 ```
+
 
