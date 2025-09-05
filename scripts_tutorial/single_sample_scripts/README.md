@@ -1,8 +1,10 @@
-## Single samples full worked example (worked example)
+## Single sample full worked example (worked example)
 
 This is a single sample full protocol steps: from download reference genome and paired-ended reads, quality control of reads and alignments, and trimming, mapping, sort. dedupping, and realignment of indels in all aligned reads, until a variant calling  procedure from the realigned reads.
 
-It is worth mentioning that *mapping* the reads and perform a *variant calling* procedure using a **single sample** will introduce a lot of bias from a perspective of a Population Genetics analysis, since one individual cannot be a full representative organism of a entire species specifically when its genetic variances, in this case based on SNPS, will be studied. Therefore, more samples should be included in this type of studies. There is not a maximum limit, but a thumbs up rule for a minimum number of samples could be 10 samples. This requirement, however, cannot be achieve due a several reasons (technical, biological, geographical, economical, etc.), so we understand that this is an ideal case and sometimes it cannot be possible. Thus, this single sample protocol steps are only to illustrate the flow of command lines "one-after-another" manner, so it can be easily follow, but also understand its implementation for a loop script to run it in a bash script or in a parallel manner. See our section "Extra "
+It is worth mentioning that *mapping* the reads and perform a *variant calling* procedure using a **single sample** will introduce a lot of bias from a Population Genetics perspective, since one individual cannot be a full representative organism of a entire species particularly when its genetic variances (based on SNPS) will be studied. Therefore, it is highly recommended to include more samples in this type of studies that can provide a "consensus" representation a sampling population region. The number of samples in a region might also depends of the biological question, though. Nevertheless, there is not a *maximum limit* reported so far, and it will depends on the requirements of project, but a *thumbs up rule* for a *minimum number of samples* should be 10 individuals. This requirement, however, sometimes cannot be achieved due several reasons (e.g. technical, biological, geographical, economical, others), so we understand that this is an ideal case and sometimes it cannot be possible. We encourage all researches to consider carefully this observation when they start planning the project budjet.
+
+Thus, this single sample protocol steps it is only to illustrate the flow of command lines in a "one-after-another" manner, so it can be easily follow, but also any intrepid person can implement it in a single full script adding and/or modifying elements or steps across of it as they wish, to run it automatically in a loop script or in parallel. Check out our **Extra content** section to see how to implement this pipeline in a **HPC (High-Performance Computing) cluster system** or in a bash script for **Server systems** for as many as samples as you want to analyze.
 
 
 
@@ -153,7 +155,7 @@ wait;
 
 10. Correction in the alignment: indels re-alignment.
 
-This procedure involves two steps: (a) indentify all low indel regions, and (b) realign those regions. For the first step we use the and second steps we use the functions `RealignerTargetCreator` and  `IndelRealigner` from GATK v.3.8.1, respectively. 
+This procedure involves two steps: (a) indentify all indel regions, and (b) realign them again. For the first step we use the and second steps we use the functions `RealignerTargetCreator` and  `IndelRealigner` from GATK v.3.8.1, respectively. 
 
 ```bash
 # First step (multi-thread):
@@ -241,9 +243,9 @@ bcftools index -n $variants_DIR/SRR11006725.aln.dedup.raln_indels.fm.snps.fltrd.
 
 ### Quality samples: fastq and bam files
 
-Here, this step can be done in parallel after the step 2 (compressed fastq.gz files) and 10 (dedupped alignment). 
+Here, this step can be done in parallel after the step 2 (compressed fastq.gz files) and 10 (dedupped alignment), so <ins>there is no need to wait until the end of the step 12: variant calling.</ins>
 
-A) Quality of the reads using `FASTQC`.
+A) Quality Control of the reads using `FASTQC`.
 
 ```bash
 cd $workdir;
@@ -251,15 +253,14 @@ mkdir quality_control && cd quality_control;
 
 fastqc $mapped_unmapped/SRR11006725.R1.paired.trimclip.fastq.gz  $mapped_unmapped/SRR11006725.R2.paired.trimclip.fastq.gz  -o  $workdir/quality_control;
 ```
- and involve two anlaysis
 
 B) Statistics for aligned reads `samtools`.
 
 ```bash
-samtools flagstats $BAM_alignments/SRR11006725.paired.dedup.bam > $BAM_alignments/SRR11006725.paired.dedup.samtools_stats.txt;
+samtools flagstats $BAM_alignments/SRR11006725.paired.dedup.bam > $workdir/quality_control/SRR11006725.paired.dedup.samtools_stats.txt;
 ```
 
-c) Merge all quality data and statistics into one single graphical report using `MULTIQC`. After running this command, you will open the HTML report.
+c) Merge all quality control reports and statistics into one single graphical report using `MULTIQC`. After running this command, the complete report will be created in a HTML file. It can be easily opened with any internet browser.
 
 ```bash
 # assuming your current workdir is $workdir/quality_control
