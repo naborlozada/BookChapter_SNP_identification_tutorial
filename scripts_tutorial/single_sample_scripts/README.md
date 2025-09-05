@@ -2,7 +2,9 @@
 
 This is a single sample full protocol steps: from download reference genome and paired-ended reads, quality control of reads and alignments, and trimming, mapping, sort. dedupping, and realignment of indels in all aligned reads, until a variant calling  procedure from the realigned reads.
 
-It is worth mentioning that *mapping* the reads and perform a *variant calling* procedure using a **single sample** will introduce a lot of bias from a perspective of a Population Genetics analysis, since one individual cannot be a full representative organism of a entire species specifically when its genetic variances, in this case based on SNPS, will be studied. Therefore, more samples should be included in this type of studies. There is not a maximum limit, but a thumbs up rule for a minimum number of samples could be 10 samples. This requirement, however, cannot be achieve due a several reasons (technical, biological, geographical, economical, etc.), so we understand that this is an ideal case and sometimes it cannot be possible.   
+It is worth mentioning that *mapping* the reads and perform a *variant calling* procedure using a **single sample** will introduce a lot of bias from a perspective of a Population Genetics analysis, since one individual cannot be a full representative organism of a entire species specifically when its genetic variances, in this case based on SNPS, will be studied. Therefore, more samples should be included in this type of studies. There is not a maximum limit, but a thumbs up rule for a minimum number of samples could be 10 samples. This requirement, however, cannot be achieve due a several reasons (technical, biological, geographical, economical, etc.), so we understand that this is an ideal case and sometimes it cannot be possible. Thus, this single sample protocol steps are only to illustrate the flow of command lines "one-after-another" manner, so it can be easily follow, but also understand its implementation for a loop script to run it in a bash script or in a parallel manner. See our section "Extra "
+
+
 
 ### Protcol
 
@@ -60,7 +62,7 @@ wait;
 sleep 2;
 
 # compress
-ls file.*.fastq | parallel 'gzip {} > {}.gz'; 
+ls SRR11006726_*.fastq | parallel 'gzip {} > {}.gz'; 
 ```
 
 3. Prepare the **Reference Genome**.
