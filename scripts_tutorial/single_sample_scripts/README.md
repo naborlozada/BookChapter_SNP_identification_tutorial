@@ -62,7 +62,7 @@ wait;
 sleep 2;
 
 # compress
-ls SRR11006726_*.fastq | parallel 'gzip {} > {}.gz'; 
+ls SRR11006725_*.fastq | parallel 'gzip {} > {}.gz'; 
 ```
 
 3. Prepare the **Reference Genome**.
