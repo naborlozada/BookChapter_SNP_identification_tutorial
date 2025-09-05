@@ -65,7 +65,8 @@ ls file.*.fastq | parallel 'gzip {} > {}.gz';
 
 3. Prepare the **Reference Genome**.
 
-This step can be done while FASTQ files are created. This `reference genome` step has been fully described in in the script section. Just [follow the same procedure presented in this file](https://github.com/naborlozada/BookChapter_SNP_identification_tutorial/blob/main/scripts_tutorial/scripts_description/02_reference_genome.md).
+&emsp; &nbsp; This step can be done in parallel while FASTQ files are created. This `reference genome` step has been fully described in in the script section. \
+&emsp; &nbsp; Just [follow the same procedure presented in this file](https://github.com/naborlozada/BookChapter_SNP_identification_tutorial/blob/main/scripts_tutorial/scripts_description/02_reference_genome.md).
 
 
 4. Trimming adapters from alinged reads.
