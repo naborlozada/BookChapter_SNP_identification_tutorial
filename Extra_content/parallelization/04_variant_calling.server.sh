@@ -1,11 +1,15 @@
 #!/usr/bin/bash
 
 
-# author: Alejandro Nabor Lozada-Chávez
-# questions: nabor.lozada@gmail.com
-#
+# ------------------------------------------------ #
+#      *** Alejandro Nabor Lozada-Chávez ***       #
+# Questions: alejandro.chavez@unipv.it             #
+#            nabor.lozada@gmail.com                #
+# ------------------------------------------------ #
+
 # Script: Variant calling procedure based on a list of BAM files using BCFTOOLS for variant calling and filtering present in a single directory.
 #         BCFtools will produce a VCF file filtered in a compressed format (GZIP).
+
 
 
 
