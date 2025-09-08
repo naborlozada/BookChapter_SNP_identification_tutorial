@@ -2,9 +2,12 @@
 #!/usr/bin/bash
 
 
-# author: Alejandro Nabor Lozada-Chávez
-# questions: nabor.lozada@gmail.com
-#
+# ------------------------------------------------ #
+#      *** Alejandro Nabor Lozada-Chávez ***       #
+# Questions: alejandro.chavez@unipv.it             #
+#            nabor.lozada@gmail.com                #
+# ------------------------------------------------ #
+
 # Script: Series of command lines used to perform QUALITY CONTROL analyses for FASTQC raw reads and BAM files 
 #         (aligned reads, either dedupped or realigned), which are present in a single directory. The script will run all analysis
 #         taking advantage of the power of the `GNU parallel` program.
@@ -93,3 +96,4 @@ echo "Total Time: ${TOTAL_TIME_MINUTES} minutes";
 echo "Total Time: ${TOTAL_TIME} hours";
 echo
 echo
+
