@@ -6,7 +6,7 @@
 # Questions: alejandro.chavez@unipv.it             #
 #            nabor.lozada@gmail.com                #
 # ------------------------------------------------ #
-#
+
 # Script: performs a trimming and alignment of raw reads on a reference genome, while at the end sort and dedup all aligned reads present in a single directory.
 
 
