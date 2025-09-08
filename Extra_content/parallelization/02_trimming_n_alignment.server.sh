@@ -1,10 +1,15 @@
 #!/usr/bin/bash
 
 
-# author: Alejandro Nabor Lozada-Chávez
-# questions: nabor.lozada@gmail.com
+# ------------------------------------------------ #
+#      *** Alejandro Nabor Lozada-Chávez ***       #
+# Questions: alejandro.chavez@unipv.it             #
+#            nabor.lozada@gmail.com                #
+# ------------------------------------------------ #
 #
-# Script: performs a trimming and alignment of raw reads on a reference genome, while at the end sort and dedup all aligned reads present in a single directory
+# Script: performs a trimming and alignment of raw reads on a reference genome, while at the end sort and dedup all aligned reads present in a single directory.
+
+
 
 
 # workding directory structure:
