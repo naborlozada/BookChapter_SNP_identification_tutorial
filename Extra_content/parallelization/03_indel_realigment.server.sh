@@ -1,10 +1,14 @@
 #!/usr/bin/bash
 
 
-# author: Alejandro Nabor Lozada-Chávez
-# questions: nabor.lozada@gmail.com
-#
+# ------------------------------------------------ #
+#      *** Alejandro Nabor Lozada-Chávez ***       #
+# Questions: alejandro.chavez@unipv.it             #
+#            nabor.lozada@gmail.com                #
+# ------------------------------------------------ #
+
 # Script: correction of aligments for each single sample present in a single directory
+
 
 
 
