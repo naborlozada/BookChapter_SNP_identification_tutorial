@@ -3,7 +3,7 @@
 
 ### Introduction
 
-Here, we share XXX bash scripts that can be used in a server (i.e. work stations) and/or HPC computer system. Briefly, these sytems have a high I/O speed, big space data storage, 
+Here, we share 8 bash scripts that can be used in a server (i.e. work stations) and/or HPC (i.e. clusters) computer system. Briefly, these sytems have a high I/O speed, big space data storage, 
 several number of cores/threads, a considerable number of nodes, and large amount of RAM memory in each node.
 In other words, a super computer system (server/cluster) is designed to perform, at high speeds using multiple processors (CPUs) working in parallel: 
 
@@ -23,8 +23,7 @@ are always very helpful.
 
 #### — Servers system —
 
-Server system bash scripts. The bash scripts are a compilation of the steps shown in this tutorial, which are divided en 4 major steps shown below. These scripts work basically as a 
-loop function, reading each pair of FASTQ files and/or BAM files, and/or VCF files to apply all corresponding bioinformatics tools. Please, change all variables for properly for their 
+ <ins>Server system bash scripts (*.server.sh).</ins> The bash scripts are a compilation of the steps shown in this tutorial, which are divided en 4 major steps shown below. These scripts work basically as a loop function, reading each pair of FASTQ files and/or BAM files, and/or VCF files to apply all corresponding bioinformatics tools. Please, change all variables for properly for their 
 corresponding files, paths and programs. They most shows the exact location of these files, so they can be processed properly.
 
 1. Quality Control: FASTQC and SAMtools.
@@ -79,9 +78,7 @@ time bash 04_variant_calling.server.sh 2>&1 | tee 04_variant_calling.server.stde
 
 #### — Cluster system —
 
-Cluster system bash scripts. The bash scripts are a compilation of the steps shown in this tutorial divided en 4 major steps shown below (as for Servers). These scripts work basically using
-the SLUM system, and have all required parameters that make it functional. Please, change all variables for properly for their corresponding files, paths and programs. They most shows the 
-exact location of these files, so they can be processed properly.
+<ins>Cluster system bash scripts (*.cluster.sh).</ins> The bash scripts are a compilation of the steps shown in this tutorial divided en 4 major steps shown below (as for Servers). These scripts work basically using the SLUM system, and have all required parameters that make it functional. Please, change all variables for properly for their corresponding files, paths and programs. They most shows the exact location of these files, so they can be processed properly.
 
 1. Quality Control: FASTQC and SAMtools.
 
