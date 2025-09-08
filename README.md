@@ -32,9 +32,10 @@ III. **Final comments**.
 2. **Scripts_tutorial**:\
    2.1. Single_scripts: single sample command lines by each step. \
    2.2. Scripts_descriptions: description of each single step. 
-3. **BQSR**: recalibration of aligned reads.\
-    3.1 Steps and description.
-4. **Parallelization**: SLURM & GNU parallel as scripts followed by descriptions of each step.
+3. **Parallelization**: SLURM & GNU parallel as scripts followed by descriptions of each step. \
+   3.1. **BQSR**: recalibration of aligned reads. Step description. \
+   3.2. **Parallelization**: recalibration of aligned reads. Bash scripts for servers or clusters. \
+4. **Final comments.**
 
 Working directory structure:
 
